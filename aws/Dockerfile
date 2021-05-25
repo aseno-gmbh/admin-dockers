@@ -4,14 +4,14 @@ FROM ubuntu:20.04
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 # install kubectl, terraform & some fancy stuff
 RUN apt-get update \
-    && apt-get install -y curl git postgresql-client telnet software-properties-common vim apt-transport-https gnupg2 python3-pip nmap \
+    && apt-get install -y curl git postgresql-client telnet software-properties-common vim ca-certificates apt-transport-https gnupg2 python3-pip nmap \
     && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-    #&& echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
+    && apt-add-repository "deb  https://packages.cloud.google.com/apt cloud-sdk main" \
     && apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.kubernetes.io kubernetes-xenial main" \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-get update \
-    && apt-get install -y kubectl terraform
+    && apt-get install -y kubectl terraform google-cloud-sdk
 
 
 ENV PYTHONWARNINGS="ignore"
