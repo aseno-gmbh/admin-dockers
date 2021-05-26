@@ -1,7 +1,8 @@
 FROM ubuntu:20.04
 # valentin 21.05.2021
+LABEL org.aseno.image.authors="valentin@aseno.org"
 
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
+RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata groff less
 # install kubectl, terraform & some fancy stuff
 RUN apt-get update \
     && apt-get install -y curl git postgresql-client telnet software-properties-common vim ca-certificates apt-transport-https gnupg2 python3-pip nmap \
