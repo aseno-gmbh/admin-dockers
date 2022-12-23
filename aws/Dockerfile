@@ -24,9 +24,8 @@ RUN apt-get update \
     # add debian keys
     #&& apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517 0E98404D386FA1D9 648ACFD622F3D138 \  
     && apt-get update \
-    && apt-get install -y kubectl kubectx terraform google-cloud-sdk
+    && apt-get install -y kubectl kubectx terraform google-cloud-sdk bash-completion
 
-COPY .bashrc /root/.bashrc
 
 RUN curl -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip  \
 	&& chmod 755 /tmp/awscliv2.zip && unzip /tmp/awscliv2.zip && ./aws/install
@@ -45,6 +44,9 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
     && helm repo add stable https://charts.helm.sh/stable \
     && curl -sL https://istio.io/downloadIstioctl | sh -
 
-ENV PATH=$PATH:/root/.istioctl/bin
+ENV PATH=$PATH:/root/.istioctl/bin:/usr/local/bin
 
+COPY .bashrc /root/.bashrc
+#CMD ["/bin/bash"] complete -C '/usr/local/bin/aws_completer' aws
+CMD ["complete", "-c", "/usr/local/bin/aws_completer", "aws"]
 CMD ["/bin/bash"]

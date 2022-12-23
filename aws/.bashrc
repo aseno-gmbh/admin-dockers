@@ -143,3 +143,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# aws stuff
+export PATH=/usr/local/bin/:$PATH
+complete -C '/usr/local/bin/aws_completer' aws
+
