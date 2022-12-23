@@ -2,28 +2,37 @@ FROM ubuntu:22.10
 # valentin 02.12.2022
 LABEL org.aseno.image.authors="valentin@aseno.de"
 
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata groff less jq bsdmainutils
+RUN apt-get update && DEBIAN_FRONTEND="noninteractive" \
+	apt-get -y install tzdata groff less jq bsdmainutils \
+        gnupg2 wget ca-certificates lsb-release software-properties-common vim telnet nmap apt-utils zip
 # install kubectl, terraform & some fancy stuff
 # info:
 # https://kubernetes.io/de/docs/tasks/tools/install-kubectl/
 # https://www.educative.io/answers/how-to-install-google-cloud-cli-on-debian-ubuntu
 RUN apt-get update \
-    && apt-get install -y curl git postgresql-client telnet software-properties-common vim ca-certificates apt-transport-https gnupg2 python3-pip nmap \
-    && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+    && apt-get install -y curl git postgresql-client apt-transport-https python3-pip \
+    #&& curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+    && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor  > /tmp/google.gpg \
+    && install -o root -g root -m 644 /tmp/google.gpg  /etc/apt/trusted.gpg.d/ \
     && apt-add-repository "deb  https://packages.cloud.google.com/apt cloud-sdk main" \
     && apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.kubernetes.io kubernetes-xenial main" \
-    && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
+    #&& curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
+    && curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor  > /tmp/hashicorp.gpg \
+    && install -o root -g root -m 644 /tmp/hashicorp.gpg  /etc/apt/trusted.gpg.d/ \
     && apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-add-repository "deb [trusted=yes] http://ftp.de.debian.org/debian buster main" \
     # add debian keys
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517 0E98404D386FA1D9 648ACFD622F3D138 \  
+    #&& apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517 0E98404D386FA1D9 648ACFD622F3D138 \  
     && apt-get update \
     && apt-get install -y kubectl kubectx terraform google-cloud-sdk
 
 COPY .bashrc /root/.bashrc
-ENV PYTHONWARNINGS="ignore"
-RUN pip3 install -U --trusted-host pypi.org  awscli
-ENV PATH=$PATH:/root/.local/bin
+
+RUN curl -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip  \
+	&& chmod 755 /tmp/awscliv2.zip && unzip /tmp/awscliv2.zip && ./aws/install
+#ENV PYTHONWARNINGS="ignore"
+#RUN pip3 install -U --trusted-host pypi.org  awscli
+#ENV PATH=$PATH:/root/.local/bin
 
 # install eksctl, helm & istio
 # info:
