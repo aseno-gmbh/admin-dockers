@@ -99,8 +99,6 @@ alias get_devops='docker run --rm -it -v ~/.aws:/root/.aws -v ~/development:/roo
 # k8s
 ### # k8s valentin
 # Resource mit einem File anlegen, bzw. modifizieren. Z.B 'kc ./runs/pipeline-run.yaml'
-alias kubectl="microk8s.kubectl"
-alias kis="microk8s.istioctl"
 k() { kubectl $@ ;}
 k_c() { kubectl create -f $1 ; }
 k_a() { kubectl apply -f $1 ; }
