@@ -7,7 +7,6 @@ clusters:
 contexts:
 - context:
     cluster: microk8s-cluster
-    namespace: demo
     user: admin
   name: microk8s
 current-context: microk8s
