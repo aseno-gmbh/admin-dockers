@@ -47,6 +47,7 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
 ENV PATH=$PATH:/root/.istioctl/bin:/usr/local/bin
 WORKDIR /root 
 COPY .bashrc /root/.bashrc
+COPY config  /root/.kube/config
 #CMD ["/bin/bash"] complete -C '/usr/local/bin/aws_completer' aws
 CMD ["complete", "-c", "/usr/local/bin/aws_completer", "aws"]
 CMD ["/bin/bash"]
