@@ -18,8 +18,11 @@ jobs:
   
   build:
     env:
-      working-directory: ${GITHUB_WORKSPACE}/aws
+      working-directory: ./aws
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
 
     steps:
     - uses: actions/checkout@v3
@@ -31,7 +34,7 @@ jobs:
         image: aseno/admin-stuff
         tags: 1.0.4, latest
         registry: docker.io
-        directory: ${GITHUB_WORKSPACE}/aws
+        directory: ${{ env.working-directory }}
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_HUB_NAME }}
         password: ${{ secrets.DOCKER_HUB_PWD }}
