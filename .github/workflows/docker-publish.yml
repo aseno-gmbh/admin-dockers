@@ -34,7 +34,7 @@ jobs:
         image: aseno/admin-stuff
         tags: 1.0.4, latest
         registry: docker.io
-        directory: ${{ env.working-directory }}
+        buildDir: ${{ env.working-directory }}
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_HUB_NAME }}
         password: ${{ secrets.DOCKER_HUB_PWD }}
