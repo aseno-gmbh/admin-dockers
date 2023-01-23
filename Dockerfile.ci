@@ -3,7 +3,7 @@ FROM ubuntu:22.10
 LABEL org.aseno.image.authors="valentin@aseno.de"
 
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" \
-	apt-get -y install tzdata groff less jq bsdmainutils \
+	apt-get -y install tzdata groff less jq bsdmainutils make \
         gnupg2 wget ca-certificates lsb-release software-properties-common vim telnet nmap apt-utils zip
 # install kubectl, terraform & some fancy stuff
 # info:
@@ -33,6 +33,10 @@ RUN curl -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_
 #RUN pip3 install -U --trusted-host pypi.org  awscli
 #ENV PATH=$PATH:/root/.local/bin
 
+# install k9s
+RUN curl -sL "https://github.com/derailed/k9s/releases/download/v0.23.4/k9s_Linux_x86_64.tar.gz" | tar xz -C /tmp \
+    && mv /tmp/k9s /usr/local/bin
+
 # install eksctl, helm & istio
 # info:
 # https://github.com/weaveworks/eksctl
@@ -46,8 +50,9 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
 
 ENV PATH=$PATH:/root/.istioctl/bin:/usr/local/bin
 WORKDIR /root 
-COPY .bashrc /root/.bashrc
+COPY bashrc_tpl /root/.bashrc
 COPY config  /root/.kube/config
+RUN chmod 600 /root/.kube/config
 #CMD ["/bin/bash"] complete -C '/usr/local/bin/aws_completer' aws
 CMD ["complete", "-c", "/usr/local/bin/aws_completer", "aws"]
 CMD ["/bin/bash"]
