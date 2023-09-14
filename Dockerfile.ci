@@ -67,7 +67,7 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
     && curl -sL https://istio.io/downloadIstioctl | sh -
 
 # install azure cli
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 ENV PATH=$PATH:/root/.istioctl/bin:/usr/local/bin
 WORKDIR /root 
