@@ -4,7 +4,7 @@ LABEL org.aseno.image.authors="valentin@aseno.de"
 
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" \
     apt-get -y install tzdata groff less jq bsdmainutils make \
-    gnupg2 wget ca-certificates apt-transport-https lsb-release software-properties-common vim telnet nmap apt-utils zip curl
+    gnupg2 wget ca-certificates lsb-release software-properties-common vim telnet nmap apt-utils zip curl
 
 # install docker
 RUN install -m 0755 -d /etc/apt/keyrings \
