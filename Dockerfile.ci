@@ -1,4 +1,4 @@
-FROM ubuntu:22.10 
+FROM ubuntu:latest
 # valentin 14.09.2023
 LABEL org.aseno.image.authors="valentin@aseno.de"
 
