@@ -1,10 +1,10 @@
 FROM ubuntu:22.10 
-# valentin 02.12.2022
+# valentin 14.09.2023
 LABEL org.aseno.image.authors="valentin@aseno.de"
 
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" \
-	apt-get -y install tzdata groff less jq bsdmainutils make \
-        gnupg2 wget ca-certificates lsb-release software-properties-common vim telnet nmap apt-utils zip curl
+    apt-get -y install tzdata groff less jq bsdmainutils make \
+    gnupg2 wget ca-certificates apt-transport-https lsb-release software-properties-common vim telnet nmap apt-utils zip curl
 
 # install docker
 RUN install -m 0755 -d /etc/apt/keyrings \
@@ -12,9 +12,9 @@ RUN install -m 0755 -d /etc/apt/keyrings \
 
 RUN chmod a+r /etc/apt/keyrings/docker.gpg \
     && echo \
-      "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-      "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-      tee /etc/apt/sources.list.d/docker.list > /dev/null 
+    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null 
 
 RUN apt-get update \
     && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -43,7 +43,7 @@ RUN apt-get update \
 
 
 RUN curl -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip  \
-	&& chmod 755 /tmp/awscliv2.zip && unzip /tmp/awscliv2.zip && ./aws/install
+    && chmod 755 /tmp/awscliv2.zip && unzip /tmp/awscliv2.zip && ./aws/install
 #ENV PYTHONWARNINGS="ignore"
 #RUN pip3 install -U --trusted-host pypi.org  awscli
 #ENV PATH=$PATH:/root/.local/bin
@@ -65,6 +65,9 @@ RUN curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksc
     && rm -f /tmp/get_heml.sh \
     && helm repo add stable https://charts.helm.sh/stable \
     && curl -sL https://istio.io/downloadIstioctl | sh -
+
+# install azure cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 ENV PATH=$PATH:/root/.istioctl/bin:/usr/local/bin
 WORKDIR /root 
